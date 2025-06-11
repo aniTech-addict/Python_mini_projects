@@ -1,7 +1,5 @@
 from typing import Counter
 from dotenv import load_dotenv
-import json
-import os
 
 import currency_value_grabber as CV
 
