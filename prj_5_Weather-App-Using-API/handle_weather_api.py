@@ -26,7 +26,7 @@ def get_coordinates(city_name,state_name):
         coordinate_details=  response.json()  # If no error, parse and return JSON
         
         for coordinate in coordinate_details:
-            if state_name == coordinate['state']:
+            if state_name.lower() == coordinate['state'].lower():
                 lat,lon = coordinate['lat'],coordinate['lon']
                 return [lat,lon]
     
@@ -48,7 +48,20 @@ def get_coordinates(city_name,state_name):
 
 
 def get_weather_info(city_name,state_name):
+    
+    
+    """
+    Takes a city name and state name as params and returns the JSON response from the
+    OpenWeatherMap API. The response contains weather information for the city.
+
+    Returns:
+    dict: A dictionary containing the JSON response from the API
+    """
     coordinates = get_coordinates(city_name,state_name)
+    if not coordinates:
+        print(f"Could not get coordinates for {city_name}, {state_name}.")
+        return None
+    
     lat,lon = coordinates[0],coordinates[1]
     
     base_url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}"
@@ -70,4 +83,40 @@ def get_weather_info(city_name,state_name):
         print(f"An unexpected error occurred: {e}")
         
     return None
-            
+
+def interpret_weather_data(weather_data):
+    
+    """
+    Takes a JSON response from the OpenWeatherMap API as input and returns a
+    human-readable summary of the current weather.
+
+    Args:
+        weather_data (dict): A dictionary containing the JSON response from the API
+
+    Returns:
+        str: A human-readable summary of the current weather
+    """
+    if not weather_data:
+        return "Could not retrieve weather information."
+
+    try:
+        description = weather_data['weather'][0]['description']
+        temp_kelvin = weather_data['main']['temp']
+        humidity = weather_data['main']['humidity']
+        wind_speed = weather_data['wind']['speed']
+        city = weather_data['name']
+
+        # Convert temperature from Kelvin to Celsius and Fahrenheit
+        temp_celsius = temp_kelvin - 273.15
+        temp_fahrenheit = (temp_celsius * 9/5) + 32
+
+        summary = ("~~\n"
+            f"The current weather in {city} is {description}. \n"
+            f"The temperature is {temp_celsius:.1f}°C ({temp_fahrenheit:.1f}°F). \n"
+            f"Humidity is {humidity}%, and wind speed is {wind_speed} m/s."
+        )
+        return summary
+    except KeyError as e:
+        return f"Error parsing weather data: Missing key {e}. Raw data: {weather_data}"
+    except Exception as e:
+        return f"An unexpected error occurred during weather interpretation: {e}"
