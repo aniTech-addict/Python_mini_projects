@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk, messagebox
+import currency_value_grabber as CV
 import os
 # Assuming your backend logic is in currency_value_grabber.py
 # import currency_value_grabber as CV 
@@ -27,7 +28,7 @@ window.resizable(False, False) # Optional: prevent resizing
 
 
 # Define a consistent font
-APP_FONT = ("Arial", 12)
+APP_FONT = ("Arial", 14)
 TITLE_FONT = ("Arial", 20, "bold")
 
 # --- Main Title ---
@@ -71,16 +72,13 @@ def perform_conversion():
             messagebox.showerror("Error", "Country names cannot be empty.")
             return
 
-        # --- Placeholder for actual conversion logic ---
-        # This is where you would call your CV.currency_value function
-        # For now, let's just print and show in the result label
-        # counter_currency_value = CV.currency_value(base_country, foreign_country)
-        # converted_amount = amount * counter_currency_value
-        # result_var.set(f"Converted Amount: {converted_amount:.2f}")
+        counter_currency_value = CV.currency_value(base_country,foreign_country)
+        converted_amount = amount * counter_currency_value
+        result_var.set(f"Converted Amount: {converted_amount:.2f}")
 
         # Dummy conversion for demonstration
         print(f"Amount: {amount}, Base: {base_country}, Foreign: {foreign_country}")
-        result_var.set(f"Conversion for {amount} from {base_country} to {foreign_country} (pending backend integration)")
+        result_var.set(f"Conversion for {amount} from {base_country} to {foreign_country} is {converted_amount:.2f}")
 
     except ValueError:
         messagebox.showerror("Error", "Invalid amount. Please enter a number.")
