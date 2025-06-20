@@ -10,7 +10,7 @@ A simple Currency Converter desktop application made with Python. This tool allo
 
 ## What the App Looks Like
 
-![App Screenshot](image1)
+![App Screenshot](app_image.png)
 
 ## Getting Started
 
