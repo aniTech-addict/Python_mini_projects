@@ -59,6 +59,13 @@ foreign_country_entry.grid(row=2, column=1, padx=5, pady=5)
 
 # --- Convert Button ---
 def perform_conversion():
+    """
+    Callback for the Convert button. Retrieves the values from the input fields, 
+    performs the currency conversion and updates the result label.
+
+    :raises ValueError: if the amount is not a valid number
+    :raises Exception: if any other unexpected error occurs
+    """
     try:
         amount_str = amount_entry.get().replace(',', '')
         if not amount_str:
@@ -76,7 +83,7 @@ def perform_conversion():
         converted_amount = amount * counter_currency_value
         result_var.set(f"Converted Amount: {converted_amount:.2f}")
 
-        # Dummy conversion for demonstration
+        
         print(f"Amount: {amount}, Base: {base_country}, Foreign: {foreign_country}")
         result_var.set(f"Conversion for {amount} from {base_country} to {foreign_country} is {converted_amount:.2f}")
 
