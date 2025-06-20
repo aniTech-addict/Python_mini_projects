@@ -7,7 +7,15 @@ from supported_country_codes import country_codes
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
-    
+"""
+-------------------FLOW OF THE CODE---------------------
+
+1. Get the conversion rates for the home country -> currency_value()
+2. Find the country code for the foreign country -> find_country_code()
+3. If the country code is not found, return None 
+4. If the conversion rates are not found, return None
+
+""" 
     
     
 def currency_value(home_country,foreign_country):
@@ -23,6 +31,9 @@ def currency_value(home_country,foreign_country):
     conversion_rates  = get_conversion_rates(home_country)
     
     foreign_country_code = find_country_code(foreign_country)
+    
+    if conversion_rates is None or foreign_country_code is None:
+        return None
     
     return conversion_rates[foreign_country_code]
     
@@ -41,6 +52,7 @@ def find_country_code(country_name):
         print("-------------------------------------------------\n"
               "Unsupported Country, Please recheck the spelling or Enter another Country Name"
               "\n-----------------------------------------------")
+        return None
         
     return country_codes[country_name.upper()] 
 
@@ -58,6 +70,8 @@ def get_conversion_rates(home_country):
     """
     
     country_code = find_country_code(home_country)
+    if country_code is None:
+        return None
     base_link = f"https://v6.exchangerate-api.com/v6/{API_KEY}/latest/{country_code}"
 
     try:
