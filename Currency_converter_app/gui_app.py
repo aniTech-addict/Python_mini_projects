@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk, messagebox
+from turtle import width
 import currency_value_grabber as CV
 import os
 # Assuming your backend logic is in currency_value_grabber.py
@@ -10,20 +11,50 @@ window = Tk()
 WIDTH = 700
 HEIGHT = 500
 TITLE = "Currency Converter"
-ICON = PhotoImage(file="Images//Money-Bag-emoji.png")
 
-# Use os.path.join for platform-independent paths
 icon_path = os.path.join("Images", "Money-Bag-emoji.png")
 if os.path.exists(icon_path):
     ICON = PhotoImage(file=icon_path)
     window.iconphoto(True, ICON)
-else:
     print(f"Warning: Icon not found at {icon_path}")
-    ICON = None # Or a default icon
+
+def show_help():
+    messagebox.showinfo("Help", """Welcome to the Currency Converter!
+
+        Here's how to get started:
+
+        1.  **Enter Amount:**
+            *   In the "Amount" field, type the numerical value of the currency you want to convert (e.g., 100, 50.75).
+
+        2.  **Enter Base Country:**
+            *   In the "Base Country Name" field, type the full name of the country whose currency you are converting FROM (e.g., United States, India, Japan).
+            *   Ensure correct spelling for accurate results.
+
+        3.  **Enter Foreign Country:**
+            *   In the "Foreign Country Name" field, type the full name of the country whose currency you are converting TO (e.g., Canada, European Union, Australia).
+            *   Again, spelling is important.
+
+        4.  **Click "Convert":**
+            *   Once all fields are filled, click the "Convert" button.
+
+        5.  **View Result:**
+            *   The converted amount will be displayed below the button.
+
+        **Tips:**
+        *   Country names are case-insensitive (e.g., "india" is the same as "INDIA").
+        *   If you see an "Unsupported country" error, please double-check the spelling of the country names.
+        *   An internet connection is required to fetch the latest exchange rates.
+
+        Happy converting!""")
+    
+    
+help_icon_path = os.path.join("Images", "help-icon.png")
+HELP = PhotoImage(file=help_icon_path)
+help_button = Button(window, text="Help", font=("Arial", 12), image=HELP,command=show_help)
+help_button.pack(side="right", padx=10, pady=10)
 
 window.title(f"""{TITLE}""")
 window.geometry(f"{WIDTH}x{HEIGHT}")
-window.iconphoto(True, ICON)
 window.resizable(False, False) # Optional: prevent resizing
 
 
@@ -80,6 +111,9 @@ def perform_conversion():
             return
 
         counter_currency_value = CV.currency_value(base_country,foreign_country)
+        if counter_currency_value is None:
+            messagebox.showerror("Error", "Unsupported country. Please recheck the spelling or Enter another Country Name")
+            return
         converted_amount = amount * counter_currency_value
         result_var.set(f"Converted Amount: {converted_amount:.2f}")
 
@@ -105,3 +139,5 @@ result_label = Label(window, textvariable=result_var, font=APP_FONT, wraplength=
 result_label.pack(pady=10)
 
 window.mainloop()
+
+
