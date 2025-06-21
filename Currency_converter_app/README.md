@@ -68,7 +68,7 @@ Feel free to fork this repository and submit pull requests. For major changes, p
 
 ## License
 
-[MIT](../LICENSE) (or specify your license)
+[MIT](../LICENSE)
 
 ---
 
