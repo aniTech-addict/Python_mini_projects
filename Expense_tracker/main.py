@@ -11,7 +11,7 @@ def main():
         #---------------- User Entry ---------------- 
         user_entry = int((input("1.Login\n"
                                 "2.Create New user\n"
-                                "3.Quit")))
+                                "3.Quit\n")))
         if user_entry == 1:
             username = user.login_as_user()
             if username == None:
