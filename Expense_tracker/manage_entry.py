@@ -7,6 +7,7 @@ class GetData:
         self.date  = None
         self.category = None
         self.amount = None
+        
     
     def get_amount(self):
         while True:
@@ -15,6 +16,7 @@ class GetData:
                 break
             except ValueError:
                 print('Invalid amount. Please enter a number')
+                
         
     def get_category(self):
         while True:
@@ -40,6 +42,8 @@ class GetData:
                 break
             else:
                 print("Invalid date format. Please enter DD/MM/YY.")  
+                
+                
     def to_dict(self):
         return {
             "date": self.date,
