@@ -6,7 +6,7 @@ def get_user_file_name(user_id):
 def create_new_user():
     user_id =input("Enter Your Username: ")
     if user_exists(user_id):
-        return "Sorry the username is already in use... Login insted ?"
+        return None
     try:
         file = get_user_file_name(user_id)
         with open(f'{file}', 'w'):
@@ -23,15 +23,15 @@ def login_as_user():
     if user_exists(user_id):
         return get_user_file_name(user_id)
     else:
-        return None
-    
-    
+        return False
+     
         
 def user_exists(user_id):
     
-    username = get_user_file_name(user_id)
-    storage_path = 'Storage'
-    users = os.listdir(storage_path)
+    file_name = f'{user_id}.json'
+    users = os.listdir('Storage')
+    if file_name in users:
+        return True
     
-    return username in users
+    return False
     

@@ -12,15 +12,20 @@ def main():
         user_entry = int((input("1.Login\n"
                                 "2.Create New user\n"
                                 "3.Quit\n")))
+        
         if user_entry == 1:
             username = user.login_as_user()
-            if username == None:
-                print("Login Failed... Try Again")
+            if username == False:
+                print("No user found... Try Again")
                 input()
                 main()
             
         elif user_entry == 2:
             username = user.create_new_user()
+            if username is None:
+                print("Error creating user... Try Again")
+                input()
+                main()
         
         elif user_entry == 3:
             exit()
