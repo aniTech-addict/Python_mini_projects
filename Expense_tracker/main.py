@@ -1,59 +1,40 @@
 import json
-from unicodedata import category
+import Manage_users as user
+from manage_entry import GetData,SaveData
 import re
 
 def main():
     print("\n~~ Expense Tracker ~~\n")
     
-    amount = int(input("Enter Amount Spent:").replace(',',''))
+    #User Entry 
     
-    category = get_category()
-    date = get_date()
-    
-    save_data(amount,category,date)
-
-
-
-           
-def get_category():
-    while True:
-        category = input("\nE: Education\n"
-                        "F: Food\n"
-                        "C: Clothes\n"
-                        "En: Entertainment\n")
+    user_entry = int((input("1.Login\n2.Create New user\n")))
+    if user_entry == 1:
+        username = user.login_as_user()
+        if username == None:
+            print("Login Failed... Try Again")
+            input()
+            main()
         
-        if re.match('^[EFC]$', category) or category == 'En':
-            return category
-            
-        else:
-            print('Please enter the right category')
-    
-    
-    
-def get_date():
-    print("\nEnter Slash seperated Date")
-    while True:
-        day = input("DD/MM/YY \r")
-        if re.match(r'^\d{2}/\d{2}/\d{2}$', day):
-            break
-        else:
-            print("Invalid date format. Please enter DD/MM/YY.")
-    
-    return day.split('/')   
-
-
-def save_data(amount,category,date):
-    with open('data.json','a+') as file:
-        entry = {
-        "month": date[1],
-        "category": category,
-        "amount": amount
-    }
+    elif user_entry == 2:
+        username = user.create_new_user()
         
-    with open('data.json', 'a') as file:
-        file.write(json.dumps(entry) + '\n')
+    else:
+        print("Invalid Entry... Try Again")
+        input()
+        main()
         
+    # Data Entry
+    input_entry = GetData()
+    input_entry.get_amount()
+    input_entry.get_category()
+    input_entry.get_date()
+    
+    
+    save_entry = SaveData(username)
+    save_entry.save_entry(input_entry)
+                
+
         
 if __name__ == "__main__":
     main()
-
