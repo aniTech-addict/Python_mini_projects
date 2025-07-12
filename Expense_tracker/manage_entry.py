@@ -64,3 +64,9 @@ class SaveData:
                 
         except IOError as e:
             print(f"Error saving entry: {e}")
+
+def main():
+    print("Function not to be called directly.")
+
+if __name__ == '__main__':
+    main()
